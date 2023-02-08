@@ -14,4 +14,5 @@ interface MovieRepository {
     suspend fun getItemListLocal(): List<Item>?
 
     suspend fun deleteAllItemsLocal()
+    suspend fun getItemsByOrder(filterByRank: Int): List<Item>?
 }

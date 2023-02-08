@@ -16,10 +16,24 @@ class PopularMovieViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val results = movieRepository.getItemList()
-                onLoadSuccess(0, results.components?.get(1)?.items)
+                if(results.components?.isNotEmpty() == true)
+                {
+                    results.components.first().items?.let {
+                        valueToOrderBy.value = it[1].valueToOrderBy
+                    }
+                    results.components[1].items?.let {
+                        movieRepository.insertItemsToDB(it)
+                    }
+                    onLoadSuccess(0, movieRepository.getItemsByOrder(filterByRank()))
+                }
+                else{
+                    isEmptyList.value = true
+                }
             } catch (e: Exception) {
                 onError(e)
             }
         }
     }
+
+    fun filterByRank(): Int =  if (valueToOrderBy.value.toString() == "rank") {1} else {2}
 }

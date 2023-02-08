@@ -22,7 +22,7 @@ abstract class BaseLoadMoreRefreshViewModel<Item> : BaseViewModel() {
     private val isLastPage = MutableLiveData<Boolean>().apply { value = false }
 
     // scroll listener for recycler view
-    val onScrollListener = object : EndlessRecyclerOnScrollListener(getLoadMoreThreshold()) {
+    private val onScrollListener = object : EndlessRecyclerOnScrollListener(getLoadMoreThreshold()) {
         override fun onLoadMore() {
             doLoadMore()
         }
@@ -39,6 +39,9 @@ abstract class BaseLoadMoreRefreshViewModel<Item> : BaseViewModel() {
      */
     abstract fun loadData(page: Int)
 
+
+    // empty list flag
+    val valueToOrderBy = MutableLiveData<String>().apply { value = "" }
     /**
      * check first time load data
      */
@@ -95,7 +98,7 @@ abstract class BaseLoadMoreRefreshViewModel<Item> : BaseViewModel() {
     /**
      * override if need change number visible threshold
      */
-    protected open fun getLoadMoreThreshold() = Constants.DEFAULT_NUM_VISIBLE_THRESHOLD
+    protected fun getLoadMoreThreshold() = Constants.DEFAULT_NUM_VISIBLE_THRESHOLD
 
     /**
      * override if need change number item per page
@@ -127,7 +130,7 @@ abstract class BaseLoadMoreRefreshViewModel<Item> : BaseViewModel() {
         itemList.value = newList
 
         // check last page
-        isLastPage.value = items?.size ?: 0 < getNumberItemPerPage()
+        isLastPage.value = (items?.size ?: 0) < getNumberItemPerPage()
 
         // reset load
         hideLoading()

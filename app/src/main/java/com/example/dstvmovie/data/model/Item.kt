@@ -1,6 +1,7 @@
 package com.example.dstvmovie.data.model
 
 import android.os.Parcelable
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.squareup.moshi.Json
@@ -13,15 +14,16 @@ import kotlinx.parcelize.Parcelize
 data class Item(
     @PrimaryKey(autoGenerate = false)
     @Json(name = "id") val id: Long?,
-    //val localId: Int,
     @Json(name = "label") val label: String?,
-    val valueToOrderBy: String?,
-    val type: String?,
-    val rank: Long?,
+    @Json(name = "valueToOrderBy") val valueToOrderBy: String?,
+    @Json(name = "type") val type: String?,
+    @Json(name = "rank") val rank: Int?,
     @Json(name = "synopsis") val synopsis: String?,
-    val title: String?,
-    val imageUrl: String?,
-    val releaseDate: Long?,
+    @Json(name = "title") val title: String?,
+    @Json(name = "imageUrl") val imageUrl: String?,
+    @Json(name = "releaseDate") val releaseDate: Long?,
+    val localId: Long?,
+    @ColumnInfo(name = "isFavourite") val isFavourite: Boolean? = false
 ) : Parcelable {
     fun getImagePath() = imageUrl
 }

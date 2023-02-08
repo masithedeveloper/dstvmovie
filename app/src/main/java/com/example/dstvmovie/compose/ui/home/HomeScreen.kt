@@ -4,6 +4,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.*
+import androidx.compose.material.BottomNavigation
+import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Error
@@ -23,8 +25,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.dstvmovie.R
 import com.example.dstvmovie.compose.toMovieDetail
+import com.example.dstvmovie.data.constant.Constants
 import com.example.dstvmovie.data.model.Item
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.components.rememberImageComponent
@@ -53,12 +57,12 @@ fun HomeScreen(
     Box(
         Modifier
             .pullRefresh(pullRefreshState)
-            .wrapContentHeight()
+            .fillMaxSize()
             .background(color = Color.White)
     ) {
         LazyVerticalGrid(
             columns = GridCells.Fixed(1),
-            modifier = Modifier.wrapContentHeight(),
+            modifier = Modifier.fillMaxSize(),
             state = scrollState,
         ) {
             items(
@@ -74,6 +78,8 @@ fun HomeScreen(
                 }
             )
         }
+        
+
 
         PullRefreshIndicator(
             refreshing = refreshing,
@@ -85,6 +91,28 @@ fun HomeScreen(
     LaunchedEffect(key1 = endOfListReached, block = {
         viewModel.doLoadMore()
     })
+}
+
+@Composable
+fun BottomNavigationBar(viewModel: PopularMovieViewModel = hiltViewModel()) {
+    BottomNavigation(
+        backgroundColor = Color(0xFF0F9D58)) {
+
+        Constants.BottomNavItems.forEach { navItem ->
+            BottomNavigationItem(
+                selected = false,
+                onClick = {
+                    viewModel.valueToOrderBy.value = navItem.valueToOrderBy
+                    viewModel.filterByRank()
+                },
+                icon = {},
+                label = {
+                    Text(text = navItem.label)
+                },
+                alwaysShowLabel = false
+            )
+        }
+    }
 }
 
 fun LazyGridState.isScrolledToEnd() =

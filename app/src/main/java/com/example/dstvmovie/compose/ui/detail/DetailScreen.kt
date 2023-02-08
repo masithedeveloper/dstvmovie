@@ -92,12 +92,12 @@ fun MovieDetailBody(
         }
         Text(
             item.title ?: "",
-            color = Color.White,
+            color = Color.Black,
             modifier = Modifier.padding(16.dp),
             fontSize = 20.sp,
         )
-        Text(item.rank.toString(), color = Color.White)
-        Text(item.synopsis ?: "", color = Color.White)
+        Text(item.rank.toString(), color = Color.Black)
+        Text(item.synopsis ?: "", color = Color.Black)
     }
 }
 

@@ -30,6 +30,10 @@ class MovieRepositoryImpl @Inject constructor(
     ) = withContext(ioDispatcher) {
         movieDao.insert(list)
     }
+    override suspend fun getItemsByOrder(filterByRank: Int): List<Item>? = withContext(ioDispatcher) {
+//        valueToOrderBy?.let { movieDao.getItemsByOrder(valueToOrderBy = it) }
+        movieDao.getItemsByOrder(filterByRank)
+    }
 
     override suspend fun getItemListLocal(): List<Item>? = withContext(ioDispatcher) {
         movieDao.getItemList()
